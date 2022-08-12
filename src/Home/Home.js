@@ -1,10 +1,33 @@
+import axios from 'axios';
 import React from 'react';
 import { useForm } from "react-hook-form";
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 import './Home.css'
 const Home = () => {
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
     const onSubmit = data => {
-       
+        const name = data.name
+        const phone = data.number
+        const email = data.email
+        const hobbies = data.hobbies
+        const totalData ={
+            name,
+            phone,
+            email, 
+            hobbies, 
+        }
+       axios.post("http://localhost:5000/tableData",totalData)
+       .then(res =>{
+         if(res){
+            toast("Your are data add successfully finishe ") 
+
+         }else{
+            toast.error("Sorry , Your data not success")
+         }
+         reset()
+         
+       })
     };
     return (
         <div className='add-main'>
@@ -15,8 +38,6 @@ const Home = () => {
                             Add
                         </button>
                     </div>
-
-
                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -52,14 +73,16 @@ const Home = () => {
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                                        <input type="submit" class="btn btn-warning px-3 text-white fw-bold"  value="Save Now" />
+                                        <input type="submit" class="btn btn-warning px-3 text-white fw-bold"   value="Save Now" />
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
+                
             </div>
+            <ToastContainer />
         </div>
     );
 };
